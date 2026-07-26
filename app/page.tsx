@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 
 type Product = { sku: string; title: string; brand: string; type: string; price: number; image: string };
 type Item = Product & { quantity: number };
@@ -44,6 +44,16 @@ export default function Home() {
   const [notice, setNotice] = useState("");
   const [imageDraft, setImageDraft] = useState<Draft | null>(null);
   const total = useMemo(() => items.reduce((sum, item) => sum + item.price * item.quantity, 0), [items]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("connected") === "1" && params.get("shop")) {
+      setShop(params.get("shop") || "");
+      setConnected(true);
+      setNotice("Shopify store connected successfully.");
+      window.history.replaceState({}, "", "/");
+    }
+  }, []);
 
   function flash(message: string) { setNotice(message); window.setTimeout(() => setNotice(""), 3200); }
   function addProduct(product: Product) { if (items.some(item => item.sku === product.sku) || items.length >= 7) return; const next = [...items, { ...product, quantity: 1 }]; setItems(next); setBrand(product.brand); setTitle(`${product.brand} ${next.length} Piece Appliance Package`); setPrice(String(next.reduce((sum, item) => sum + item.price, 0))); }
