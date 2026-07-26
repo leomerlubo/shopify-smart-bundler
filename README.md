@@ -12,7 +12,8 @@ A Vercel ready Shopify bundle application for creating bundle products from exis
 • Downloadable CSV template
 • Draft bundle workflow
 • Shopify product image selection area
-• Firebase client configuration
+• Firebase client and Admin SDK configuration
+• Encrypted Shopify access token storage in Firestore
 • Responsive interface
 
 ## Deploy with Vercel
@@ -41,10 +42,10 @@ Use the Shopify Client ID for `SHOPIFY_API_KEY` and the Client secret for `SHOPI
 
 Create a Firebase project with Firestore enabled. Add the browser configuration values to the `NEXT_PUBLIC_FIREBASE_*` variables. Server credentials should only be stored in Vercel Environment Variables.
 
-Firebase will store store installations, draft records, brand codes, import history, and image workflow status. Shopify remains the source of truth for product information and published bundle data.
+Firebase stores store installations, draft records, brand codes, import history, and image workflow status. Shopify access tokens are encrypted with AES 256 GCM before they are written to Firestore. Shopify remains the source of truth for product information and published bundle data.
 
 ## Current milestone
 
-The interface and authentication routes are now in place. The product list currently uses sample products until the Shopify GraphQL product query and encrypted Firebase session storage are connected in the next backend milestone.
+The interface, Shopify authentication routes, and encrypted Firebase installation storage are now in place. The product list currently uses sample products until the Shopify GraphQL product query is connected in the next backend milestone.
 
 Never commit Shopify secrets, Firebase service credentials, access tokens, or private keys.
